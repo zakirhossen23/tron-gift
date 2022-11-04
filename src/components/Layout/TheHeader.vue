@@ -70,9 +70,12 @@ export default defineComponent({
     },
     methods: {
         getTronStatus() {
-            this.walletAddress = window?.tronWeb?.defaultAddress?.base58 ;
+           this.getWalletAddress() ;
             this.isTronLinkInstalled = window?.tronLink === undefined;
             this.isTronLinkConnected =  window?.tronWeb?.defaultAddress?.base58 != false && window?.tronWeb?.defaultAddress?.base58 != undefined;
+        },
+        getWalletAddress(){
+          this.walletAddress =  window?.tronWeb?.defaultAddress?.base58.toString().substr(0, 8) + "..." + window?.tronWeb?.defaultAddress?.base58.toString().substr(27, 8);
         },
         async connectTron() {
             let result = await window.tronWeb.request({ method: 'tron_requestAccounts' });
@@ -82,6 +85,7 @@ export default defineComponent({
         async installTron() {
             window.open("https://chrome.google.com/webstore/detail/tronlink/ibnejdfjmmkpcnlpebklmnkoeoihofec","_blank");
         },
+        
 
     },
     created() {
