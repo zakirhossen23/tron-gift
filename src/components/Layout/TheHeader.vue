@@ -91,7 +91,8 @@ export default defineComponent({
     created() {
         setTimeout(() => {
             this.getTronStatus();
-        }, 200);
+            this.getWalletAddress();
+        }, 500);
     },
 
 
