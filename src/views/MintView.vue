@@ -47,6 +47,14 @@
 declare let window: any;
 import { defineComponent } from 'vue';
 
+let contract: any = { contract: null, signerAddress: null };
+async function getContract() {
+    let useContract = await import("../contract/useContract");
+    contract = await useContract.default();
+}
+getContract();
+
+
 export default defineComponent({
   name: 'TheHeader',
   components: {},
@@ -56,7 +64,7 @@ export default defineComponent({
       recipientGiven: "",
       messageGiven: "(Write your message)",
       nameGiven: "Write your name",
-      walletAddress: window?.tronWeb?.defaultAddress?.base58,
+      walletAddress: window?.tronWeb?.defaultAddress?.base58
     }
 
   },
@@ -83,6 +91,9 @@ export default defineComponent({
       var BTN = document.querySelector("#submitBTN");
       BTN?.classList.add("button--loading");
       BTN?.classList.add("disabled");
+
+      //Creating Object
+      
     }
     
   },

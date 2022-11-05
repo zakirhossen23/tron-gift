@@ -47,12 +47,6 @@
 <script lang="ts">
 declare let window: any;
 import { defineComponent } from 'vue';
-let contract: any = { contract: null, signerAddress: null };
-async function getContract() {
-    let contract2 = await import("../../contract/useContract");
-    contract = contract2;
-}
-getContract();
 
 export default defineComponent({
     name: 'TheHeader',
