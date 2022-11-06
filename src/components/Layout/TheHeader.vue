@@ -17,24 +17,27 @@
                 </div>
 
                 <div v-if="isTronLinkConnected" id="ContainerWallet"
-                style="background: rgb(239, 239, 239);padding: 0.8rem;right: 1rem;top: 4px;" 
-                class="position-absolute rounded-5">
+                    style="background: rgb(239, 239, 239);padding: 0.8rem;right: 1rem;top: 4px;"
+                    class="position-absolute rounded-5">
                     <div class="" style="display: flex;gap: 0.5rem;">
                         <img src="https://th.bing.com/th/id/OIP.SAZyRuAR859KOTNNGFVASwAAAA?pid=ImgDet&amp;rs=1"
                             width="20">
                         <!-- <span href="/" >TErF2SND...EUcZ</span> -->
-                        <span >{{ walletAddress }}</span>
+                        <span>{{ walletAddress }}</span>
                     </div>
                 </div>
 
 
-                <div class="btn-group-toggle position-absolute"  style="right: 1rem;top: 7px;"  v-else-if="isTronLinkInstalled">
-                    <button type="button" v-on:click="installTron()" class="btn btn-primary p-lg-2">Install TronLink</button>
+                <div class="btn-group-toggle position-absolute" style="right: 1rem;top: 7px;"
+                    v-else-if="isTronLinkInstalled">
+                    <button type="button" v-on:click="installTron()" class="btn btn-primary p-lg-2">Install
+                        TronLink</button>
 
                 </div>
 
-                <div class="btn-group-toggle position-absolute"  style="right: 1rem;top: 7px;"  v-else>
-                    <button type="button" v-on:click="connectTron()"  class="btn btn-primary p-lg-2">Connect to TronLink</button>
+                <div class="btn-group-toggle position-absolute" style="right: 1rem;top: 7px;" v-else>
+                    <button type="button" v-on:click="connectTron()" class="btn btn-primary p-lg-2">Connect to
+                        TronLink</button>
 
                 </div>
 
@@ -56,7 +59,7 @@ export default defineComponent({
             data: {},
             isPageMint: window.location.pathname == '/mint',
             isPageGift: window.location.pathname == '/gift',
-            walletAddress: window?.tronWeb?.defaultAddress?.base58 ,
+            walletAddress: window?.tronWeb?.defaultAddress?.base58,
             isTronLinkInstalled: window?.tronLink === undefined,
             isTronLinkConnected: window?.tronWeb?.defaultAddress?.base58 != false && window?.tronWeb?.defaultAddress?.base58 != undefined
         }
@@ -64,12 +67,12 @@ export default defineComponent({
     },
     methods: {
         getTronStatus() {
-           this.getWalletAddress() ;
+            this.getWalletAddress();
             this.isTronLinkInstalled = window?.tronLink === undefined;
-            this.isTronLinkConnected =  window?.tronWeb?.defaultAddress?.base58 != false && window?.tronWeb?.defaultAddress?.base58 != undefined;
+            this.isTronLinkConnected = window?.tronWeb?.defaultAddress?.base58 != false && window?.tronWeb?.defaultAddress?.base58 != undefined;
         },
-        getWalletAddress(){
-          this.walletAddress =  window?.tronWeb?.defaultAddress?.base58.toString().substr(0, 8) + "..." + window?.tronWeb?.defaultAddress?.base58.toString().substr(27, 8);
+        getWalletAddress() {
+            this.walletAddress = window?.tronWeb?.defaultAddress?.base58.toString().substr(0, 8) + "..." + window?.tronWeb?.defaultAddress?.base58.toString().substr(27, 8);
         },
         async connectTron() {
             let result = await window.tronWeb.request({ method: 'tron_requestAccounts' });
@@ -77,16 +80,21 @@ export default defineComponent({
             this.getTronStatus();
         },
         async installTron() {
-            window.open("https://chrome.google.com/webstore/detail/tronlink/ibnejdfjmmkpcnlpebklmnkoeoihofec","_blank");
+            window.open("https://chrome.google.com/webstore/detail/tronlink/ibnejdfjmmkpcnlpebklmnkoeoihofec", "_blank");
         },
-        
+
 
     },
     created() {
         setTimeout(() => {
-            this.getTronStatus();
             this.getWalletAddress();
-        }, 500);
+            this.getTronStatus();
+            setInterval(() => {
+                this.getWalletAddress();
+                this.getTronStatus();
+            }, 1500);
+        }, 700);
+
     },
 
 

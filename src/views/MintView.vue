@@ -7,7 +7,7 @@
           <div class="d-flex gift-card-container-insde h-100 justify-content-sm-around w-100">
             <div class="d-block gift-card-insider-message position-relative">
               <div class="d-flex flex-column h-75 justify-content-center">
-                <small style="font-family:Arial;">{{messageGiven}}</small>
+                <small style="font-family:Arial;font-size: 1rem;">{{messageGiven}}</small>
               </div>
               <div class="align-items-center d-flex flex-column position-absolute" style="bottom:9px;width:225px;">
                 <small class="fw-bold text-center text-muted" style="bottom:20px;padding:0px;font-size:0.8rem;line-height:1.57;letter-spacing:0.00714em;">{{nameGiven}}</small>
@@ -46,6 +46,10 @@
 <script lang="ts">
 declare let window: any;
 import { defineComponent } from 'vue';
+
+ import {useToast}  from "vue-toastification";
+
+const toast = useToast();
 
 let contract: any = { contract: null, signerAddress: null };
 async function getContract() {
@@ -92,15 +96,26 @@ export default defineComponent({
       BTN?.classList.add("button--loading");
       BTN?.classList.add("disabled");
 
-      //Creating Object
-      
+      let AmountinFull = (Number(this.amountGiven) * 1000000).toLocaleString('fullwide', { useGrouping: false });
+      // //Creating Object
+      // await contract.contract.mintGift(this.walletAddress,this.recipientGiven,this.messageGiven,this.nameGiven).send({
+      //     callValue:AmountinFull,
+      //     feeLimit: 1_000_000_000,
+      //     shouldPollResponse: false
+      //   })
+
+      toast.success("Event received!")
+
+      BTN?.classList.remove("button--loading");
+      BTN?.classList.remove("disabled");
+
     }
     
   },
   created() {
-    setTimeout(() => {
+    setInterval(() => {
       this.getWalletAddress();
-    }, 500);
+    }, 1500);
   },
 
 
@@ -124,7 +139,7 @@ export default defineComponent({
 
 .gift-card-insider-message {
   width: 238px;
-  padding: 13px 0px 0px 13px;
+  padding: 37px 0px 0px 13px;
 }
 
 .gift-card-insider-amount {
