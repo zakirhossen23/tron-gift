@@ -5,11 +5,14 @@
     transition: all 0.2s;
   }
   
-  .button--loading .button__text {
+  .button--loading span {
+    transition: all 0.2s;
     visibility: hidden;
     opacity: 0;
   }
-  
+  .button--loading {
+    background: #ffffff42 !important;
+}
   .button--loading::after {
     content: "";
     position: absolute;
@@ -21,7 +24,7 @@
     bottom: 0;
     margin: auto;
     border: 4px solid transparent;
-    border-top-color: #ffffff;
+    border-top-color: #000000;
     border-radius: 50%;
     animation: button-loading-spinner 1s ease infinite;
   }

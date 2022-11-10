@@ -1,8 +1,6 @@
 <template>
-  <div class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid" >
-      Home
-      </div>  
+  <div class="p-4 position-absolute" style="top: 46%;left: 36%;">
+    <div class="fs-2 h-100">Send a gift card to your Friend</div>
   </div>
 </template>
 

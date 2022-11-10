@@ -11,7 +11,7 @@
                                 a Gift Card</a>
                         </li>
                         <li :class="{ 'active': isPageGift }" class="nav-item">
-                            <a class="nav-link " href="/gift">My Gift Card</a>
+                            <a class="nav-link " href="/gift">My Gift Cards</a>
                         </li>
                     </ul>
                 </div>
@@ -61,7 +61,7 @@ export default defineComponent({
             isPageGift: window.location.pathname == '/gift',
             walletAddress: window?.tronWeb?.defaultAddress?.base58,
             isTronLinkInstalled: window?.tronLink === undefined,
-            isTronLinkConnected: window?.tronWeb?.defaultAddress?.base58 != false && window?.tronWeb?.defaultAddress?.base58 != undefined
+            isTronLinkConnected: window?.tronWeb?.defaultAddress?.base58 != false && window?.tronWeb?.defaultAddress?.base58 != undefined && window?.tronLink?.tronWeb !== false
         }
 
     },
@@ -69,13 +69,18 @@ export default defineComponent({
         getTronStatus() {
             this.getWalletAddress();
             this.isTronLinkInstalled = window?.tronLink === undefined;
-            this.isTronLinkConnected = window?.tronWeb?.defaultAddress?.base58 != false && window?.tronWeb?.defaultAddress?.base58 != undefined;
+            this.isTronLinkConnected = window?.tronWeb?.defaultAddress?.base58 != false && window?.tronWeb?.defaultAddress?.base58 != undefined && window?.tronLink?.tronWeb !== false;
         },
         getWalletAddress() {
             this.walletAddress = window?.tronWeb?.defaultAddress?.base58.toString().substr(0, 8) + "..." + window?.tronWeb?.defaultAddress?.base58.toString().substr(27, 8);
         },
         async connectTron() {
-            let result = await window.tronWeb.request({ method: 'tron_requestAccounts' });
+            let result = await window.tronWeb.request({
+                method: 'tron_requestAccounts', params: {
+                    websiteIcon: './favicon.ico',
+                    websiteName: 'TronGift',
+                },
+            });
             result;
             this.getTronStatus();
         },

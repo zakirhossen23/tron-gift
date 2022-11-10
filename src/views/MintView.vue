@@ -56,7 +56,7 @@
       <h3>Gift you sent</h3>
     </div>
     <div class="d-flex flex-wrap m-3 m-lg-5 show-grid">
-      <div v-if="sentGifts[0]?.name !== ''">
+      <div class="d-flex flex-wrap gap-5 show-grid" v-if="sentGifts[0]?.name !== '' && sentGifts.length !== 0">
         <div class="d-flex" v-for="(value, index) in sentGifts" :key="index">
           <div class="gift-card-container position-relative">
             <div class="d-flex gift-card-container-insde h-100 justify-content-sm-around w-100">
@@ -84,8 +84,8 @@
           </div>
         </div>
       </div>
-      <div class="alert alert-primary text-start w-100" v-else-if="!isRunning">
-        You have not sent any Gifts  
+      <div class="alert alert-primary text-start w-100" v-if="(!isRunning && sentGifts.length === 0) || (!isRunning && sentGifts[0]?.name === '') ">
+        You have no Gifts  
       </div>
       <div class="alert alert-primary text-start w-100" v-if="isRunning">
         Loading...
@@ -187,8 +187,8 @@ export default defineComponent({
         position: "top-right",
         timeout: 5000,
         closeOnClick: true,
-        pauseOnFocusLoss: true,
-        pauseOnHover: true,
+        pauseOnFocusLoss: false,
+        pauseOnHover: false,
         draggable: true,
         draggablePercent: 0.6,
         showCloseButtonOnHover: false,
@@ -199,7 +199,8 @@ export default defineComponent({
       });
 
 
-      let AmountinFull = (Number(this.amountGiven) * 1000000).toLocaleString('fullwide', { useGrouping: false });
+      try {
+        let AmountinFull = (Number(this.amountGiven) * 1000000).toLocaleString('fullwide', { useGrouping: false });
       // Creating in Smart Contract
       await contract.contract.mintGift(this.walletAddress, this.recipientGiven, this.messageGiven, this.nameGiven).send({
         callValue: AmountinFull,
@@ -211,8 +212,8 @@ export default defineComponent({
         position: "top-right",
         timeout: 5000,
         closeOnClick: true,
-        pauseOnFocusLoss: true,
-        pauseOnHover: true,
+        pauseOnFocusLoss: false,
+        pauseOnHover: false,
         draggable: true,
         draggablePercent: 0.6,
         showCloseButtonOnHover: false,
@@ -222,6 +223,25 @@ export default defineComponent({
         rtl: false
       });
       this.clearFieds();
+      this.getSentGifts();
+      } catch (error) {
+        toast.error("Minting Gift Card Failed", {
+          position: "top-right",
+          timeout: 5000,
+          closeOnClick: true,
+          pauseOnFocusLoss: false,
+          pauseOnHover: false,
+          draggable: true,
+          draggablePercent: 0.6,
+          showCloseButtonOnHover: false,
+          hideProgressBar: false,
+          closeButton: "button",
+          icon: true,
+          rtl: false
+        });
+      }
+
+   
       BTN?.classList.remove("button--loading");
       BTN?.classList.remove("disabled");
 
@@ -246,6 +266,7 @@ export default defineComponent({
 .gift-card-container {
   width: 400px;
   height: 220px;
+  user-select: none;
 }
 
 .gift-card-container-insde {
